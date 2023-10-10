@@ -1,15 +1,17 @@
-import { bubbleSort } from "./sort/bubbleSort";
-import { insertionSort } from "./sort/insertionSort";
-import { selectionSort } from "./sort/selectionSort";
-import { mergeSort } from "./sort/mergeSort";
-import { quickSort } from "./sort/quickSort";
-import { heapSort } from "./sort/heapSort";
+import { BFS } from "./path/bfs";
+import { DFS } from "./path/dfs";
+import { Dijkstra } from "./path/dijkstra";
+import { Astar } from "./path/astar";
+import { BasicMaze } from "./maze/basicMaze";
+import { RecursiveDivision } from "./maze/recursiveDivision";
+import { RandomizedDfs } from "./maze/randomizedDfs";
 
 export {
-  bubbleSort,
-  insertionSort,
-  selectionSort,
-  mergeSort,
-  quickSort,
-  heapSort,
+  BFS,
+  DFS,
+  Dijkstra,
+  Astar,
+  BasicMaze,
+  RecursiveDivision,
+  RandomizedDfs,
 };

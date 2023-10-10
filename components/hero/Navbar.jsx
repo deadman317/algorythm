@@ -12,7 +12,7 @@ const navigation = [
 const Navbar = () => {
   const pathname = usePathname();
   return (
-    <header className="inset-x-0 top-0 z-50 my-2 rounded-2xl bg-primary bg-opacity-70">
+    <header className="inset-x-0 top-0 my-2 rounded-2xl bg-primary bg-opacity-70">
       <nav
         className="flex items-center justify-between p-6 lg:px-8"
         aria-label="Global"
