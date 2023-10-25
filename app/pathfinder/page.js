@@ -251,6 +251,8 @@ const PathFinder = () => {
                 onChange={(e) => {
                   setPathID(parseInt(e.target.value));
                 }}
+                id="path"
+                name="path"
               >
                 <option value="0">A-Star Search</option>
                 <option value="1">Breadth-First Search</option>
@@ -287,6 +289,8 @@ const PathFinder = () => {
                 onChange={(e) => {
                   setMazeID(parseInt(e.target.value));
                 }}
+                id="maze"
+                name="maze"
               >
                 <option disabled value="0">
                   Select Maze

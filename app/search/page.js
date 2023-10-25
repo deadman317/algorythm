@@ -166,8 +166,8 @@ const Search = () => {
                 setSearchID(parseInt(e.target.value));
                 generateNewArray();
               }}
-              id="num1"
-              name="num1"
+              id="search"
+              name="search"
             >
               <option value="0">Linear Search</option>
               <option value="1">Binary Search</option>
@@ -197,8 +197,8 @@ const Search = () => {
               className="select ml-2"
               value={bar.length}
               onChange={sizeHandle}
-              id="num"
-              name="num"
+              id="size"
+              name="size"
             >
               <option value="25">25</option>
               <option value="50">50</option>

@@ -294,8 +294,8 @@ const Sort = () => {
                 setSortID(parseInt(e.target.value));
                 generateNewArray();
               }}
-              id="num1"
-              name="num1"
+              id="sort"
+              name="sort"
             >
               <option value="0">Bubble Sort</option>
               <option value="1">Selection Sort</option>
@@ -328,8 +328,8 @@ const Sort = () => {
               className="select dis"
               value={bar.length}
               onChange={sizeHandle}
-              id="num"
-              name="num"
+              id="size"
+              name="size"
             >
               <option value="25">25</option>
               <option value="50">50</option>
