@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "@/styles/searching.css";
-import "@/styles/PathfindingVS.css";
 
 var BARS = 50;
-const barWidth = 15;
 var SPEED = 500;
+var ORGINAL_COLOR = "#3498DB";
+var COMP_COLOR = "#FF5959";
+var FOUND_COLOR = "#00FF00";
+let lowerLimit = 30;
+let upperLimit = 400;
 
 async function waitForAnimate(sp) {
   sp = sp < 5 ? 5 : sp;
@@ -18,8 +20,8 @@ async function waitForAnimate(sp) {
 }
 const Search = () => {
   const [bar, setBar] = useState([]);
-  var [speed, setSpeed] = useState(SPEED);
-  const [sortID, setSortID] = useState(0);
+  const [speed, setSpeed] = useState(SPEED);
+  const [searchID, setSearchID] = useState(0);
 
   useEffect(() => {
     init();
@@ -27,8 +29,6 @@ const Search = () => {
 
   const init = () => {
     var arr = [];
-    let lowerLimit = 30;
-    let upperLimit = 400;
     for (let i = 0; i < BARS; i++) {
       let x =
         Math.floor(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit;
@@ -36,11 +36,8 @@ const Search = () => {
     }
     setBar(arr);
   };
-  var ORGINAL_COLOR = "#3498DB";
-  var COMP_COLOR = "#FF5959";
-  var FOUND_COLOR = "#00FF00";
 
-  //searching algorithm
+  /*---------------------Searching Algorithm---------------------*/
 
   const linearSearch = async () => {
     var newBars = [];
@@ -48,10 +45,11 @@ const Search = () => {
     var searchValue = document.getElementById("searchValue").value;
     var found = false;
     for (let i = 0; i < newBars.length; i++) {
-      document.getElementById("bar-" + i).style.background = COMP_COLOR;
+      const target = document.getElementById("bar-" + i);
+      target.style.background = COMP_COLOR;
       await waitForAnimate(SPEED);
       if (newBars[i] == searchValue) {
-        document.getElementById("bar-" + i).style.background = FOUND_COLOR;
+        target.style.background = FOUND_COLOR;
         found = true;
         break;
       }
@@ -91,9 +89,13 @@ const Search = () => {
     if (!found) alert("Not Found");
   };
 
+  /*---------------------End Searching Algorithm---------------------*/
+
+  /*---------------------Event Handlers---------------------*/
+
   const startSearchingHandle = async () => {
     reset();
-    var btns = document.getElementsByClassName("button-4");
+    var btns = document.getElementsByTagName("button");
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = true;
     }
@@ -101,7 +103,7 @@ const Search = () => {
     document.getElementsByTagName("select")[0].disabled = true;
     document.getElementsByTagName("select")[1].disabled = true;
 
-    switch (sortID) {
+    switch (searchID) {
       case 1:
         await binarySearch();
         break;
@@ -115,63 +117,53 @@ const Search = () => {
     document.getElementsByTagName("input")[0].disabled = false;
     document.getElementsByTagName("select")[0].disabled = false;
     document.getElementsByTagName("select")[1].disabled = false;
-    bar.sort((a, b) => a > b);
   };
 
   const rangeValueHandle = (event) => {
     SPEED = parseInt(event.target.max) - parseInt(event.target.value);
     setSpeed(event.target.valueAsNumber);
   };
-  const sizeHandle = (e) => {
-    BARS = parseInt(e.target.value);
+
+  const sizeHandle = (event) => {
+    BARS = parseInt(event.target.value);
     generateNewArray();
   };
+
   const generateNewArray = () => {
-    var arr = [];
-    let lowerLimit = 30;
-    let upperLimit = 400;
-    for (let i = 0; i < BARS; i++) {
-      let x =
-        Math.floor(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit;
-      arr.push(x);
-    }
+    init();
     for (let i = 0; i < bar.length; i++) {
       var dom = document.getElementById("bar-" + i);
-      dom.style.backgroundColor = "#3498DB";
+      dom.style.backgroundColor = ORGINAL_COLOR;
     }
-    setBar(arr);
   };
+
   const reset = () => {
     for (let i = 0; i < bar.length; i++) {
       var dom = document.getElementById("bar-" + i);
-      dom.style.backgroundColor = "#3498DB";
+      dom.style.backgroundColor = ORGINAL_COLOR;
     }
   };
+
+  /*---------------------End Event Handlers---------------------*/
+
+  /*---------------------JSX---------------------*/
   return (
     <>
-      <div className="searching-continer">
-        <div className="Btn-Wrap">
-          <div style={{ display: "flex" }}>
+      <div className="mx-auto my-7 max-w-6xl p-3">
+        <div className="mb-16 flex justify-between">
+          <div className="flex">
             <input
-              className="searching-input"
+              className="input"
               type="text"
               id="searchValue"
-              placeholder="Enter value to"
+              autoComplete="off"
+              placeholder="Enter value"
             ></input>
-            <button
-              className="button-4 start-btn"
-              onClick={startSearchingHandle}
-            >
-              Start Searching
-            </button>
-            <button className="button-4" onClick={generateNewArray}>
-              Generate New
-            </button>
             <select
-              className="my-drop-down"
-              value={sortID}
+              className="select"
+              value={searchID}
               onChange={(e) => {
-                setSortID(parseInt(e.target.value));
+                setSearchID(parseInt(e.target.value));
                 generateNewArray();
               }}
               id="num1"
@@ -180,30 +172,29 @@ const Search = () => {
               <option value="0">Linear Search</option>
               <option value="1">Binary Search</option>
             </select>
+            <button className="start-btn" onClick={startSearchingHandle}>
+              Start Searching
+            </button>
           </div>
-          <div className="st-speed-range">
-            <div className="st-speed-range-lavel">
-              <label className="searching-label" htmlFor="range1">
-                Speed:{" "}
-              </label>
-            </div>
-            <div>
-              <input
-                type="range"
-                onChange={rangeValueHandle}
-                name="range1"
-                id="range1"
-                min="1"
-                value={speed}
-                max="1000"
-                step="1"
-              ></input>
-            </div>
+          <div className="flex items-center">
+            <label htmlFor="range" className="label mr-1">
+              Speed:
+            </label>
+            <input
+              className="slider"
+              type="range"
+              onChange={rangeValueHandle}
+              name="range"
+              id="range"
+              min="1"
+              value={speed}
+              max="1000"
+              step="1"
+            ></input>
           </div>
-          <div>
-            <label htmlFor="num">Choose Size: </label>
+          <div className="flex">
             <select
-              className="my-drop-down"
+              className="select ml-2"
               value={bar.length}
               onChange={sizeHandle}
               id="num"
@@ -213,18 +204,23 @@ const Search = () => {
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
+            <button className="generate-btn" onClick={generateNewArray}>
+              Generate New
+            </button>
           </div>
         </div>
-        <div className="wrapperBar">
+        <div className="flex h-96 w-full items-end justify-center">
           {bar.map((item, id) => {
             return (
               <div
-                className="bar"
+                className="mx-[1px] flex w-4 items-end justify-center rounded-lg"
                 id={"bar-" + id}
                 key={id}
-                style={{ width: barWidth, height: item }}
+                style={{ height: item, backgroundColor: ORGINAL_COLOR }}
               >
-                <span className="bar-details"> {item}</span>
+                <span className="mb-2 -rotate-90 select-none text-xs text-black">
+                  {item}
+                </span>
               </div>
             );
           })}

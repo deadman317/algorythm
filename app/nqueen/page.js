@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "@/styles/nqueens.css";
-import "@/styles/PathfindingVS.css";
 
 var SpeedTime = 600;
 
@@ -219,16 +217,14 @@ const NQueen = () => {
   };
 
   const startHandle = async () => {
-    var btns = document.getElementsByClassName("button-4");
+    var btns = document.getElementsByClassName("dis");
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = true;
     }
-    document.getElementById("gridSizeRange").disabled = true;
     await n_queen(0, 0);
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = false;
     }
-    document.getElementById("gridSizeRange").disabled = false;
   };
 
   const timeHandle = (e) => {
@@ -239,61 +235,56 @@ const NQueen = () => {
 
   return (
     <>
-      <div className="queen_contianer">
-        <div className="queen_header">
-          <div>
+      <div className="h-[80vh]">
+        <div className="mx-auto my-8 flex max-w-2xl justify-between">
+          <button onClick={startHandle} className="start-btn dis">
+            Start Visualize
+          </button>
+          <div className="flex flex-col items-center justify-around">
             <div>
-              <button
-                onClick={startHandle}
-                className="button-4 start-btn queen_btn"
-              >
-                Start Visualize
-              </button>
-              <button
-                onClick={() => {
-                  gridInit();
+              <label htmlFor="gridSizeRange" className="label mr-1">
+                Size:
+              </label>
+              <input
+                className="slider dis ml-2"
+                type="range"
+                onChange={(e) => {
+                  setGridSize(parseInt(e.target.value));
                 }}
-                className="button-4 queen_btn"
-              >
-                Clear Board
-              </button>
+                value={gridSize}
+                min="3"
+                max="8"
+                step="1"
+                id="gridSizeRange"
+              ></input>
+            </div>
+            <div>
+              <label htmlFor="speedRange" className="label mr-1">
+                Speed:
+              </label>
+              <input
+                className="slider ml-2"
+                type="range"
+                onChange={timeHandle}
+                value={speed}
+                min="100"
+                max="1200"
+                id="speedRange"
+              ></input>
             </div>
           </div>
-          <div>
-            <div className="queen_range">
-              <div className="queenlabel">Speed:</div>
-              <div>
-                <input
-                  type="range"
-                  onChange={timeHandle}
-                  value={speed}
-                  min="100"
-                  max="1200"
-                  id="speedRange"
-                ></input>
-              </div>
-            </div>
-            <div className="queen_range">
-              <div className="queenlabel">Size:</div>
-              <div>
-                <input
-                  type="range"
-                  onChange={(e) => {
-                    setGridSize(parseInt(e.target.value));
-                  }}
-                  value={gridSize}
-                  min="3"
-                  max="8"
-                  step="1"
-                  id="gridSizeRange"
-                ></input>
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              gridInit();
+            }}
+            className="button-primary dis"
+          >
+            Clear Board
+          </button>
         </div>
         {grid.map((row, i) => {
           return (
-            <div key={i} className="queen-row">
+            <div key={i} className="flex items-center justify-center">
               {row.map((v, j) => {
                 if ((i + j) % 2 === 0)
                   return (
@@ -307,7 +298,7 @@ const NQueen = () => {
                   <div
                     id={`cell-${i}-${j}`}
                     key={j}
-                    className="queen-cell"
+                    className="h-[70px] w-[70px] outline outline-1 outline-[#607d8b]"
                   ></div>
                 );
               })}

@@ -6,7 +6,7 @@ const Grids = ({ pr }) => {
     <>
       {Grid.map((R, idx_r) => {
         return (
-          <div key={idx_r} className="ROW">
+          <div key={idx_r} className="flex">
             {R.map((Value, idx_c) => {
               const { x, y, isStart, isEnd, isWall, isWeight } = Value;
               return (

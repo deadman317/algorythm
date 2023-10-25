@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "@/styles/sorting.css";
-import "@/styles/PathfindingVS.css";
 
 var BARS = 50;
-const barWidth = 15;
 var SPEED = 500;
+var ORGINAL_COLOR = "#3498DB";
+var COMP_COLOR = "#FF5959";
+var SORTED_COLOR = "#6C3483";
+var PIVOT_COLOR = "orange";
+let lowerLimit = 30;
+let upperLimit = 400;
 
 async function waitForAnimate(sp) {
   sp = sp < 5 ? 5 : sp;
@@ -19,7 +22,7 @@ async function waitForAnimate(sp) {
 
 const Sort = () => {
   const [bar, setBar] = useState([]);
-  var [speed, setSpeed] = useState(SPEED);
+  const [speed, setSpeed] = useState(SPEED);
   const [sortID, setSortID] = useState(0);
 
   useEffect(() => {
@@ -29,15 +32,12 @@ const Sort = () => {
   const init = () => {
     var arr = [];
     for (let i = 0; i < BARS; i++) {
-      let x = Math.floor(Math.random() * 1000) % 400;
+      let x =
+        Math.floor(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit;
       arr.push(x);
     }
     setBar(arr);
   };
-  var ORGINAL_COLOR = "#3498DB";
-  var COMP_COLOR = "#FF5959";
-  var SORTED_COLOR = "#6C3483";
-  var PIVOT_COLOR = "orange";
 
   const swap = (i, j, newBars) => {
     document.getElementById("bar-" + i).style.height = newBars[j] + "px";
@@ -47,7 +47,11 @@ const Sort = () => {
     newBars[i] = newBars[j];
     newBars[j] = tmp;
   };
-  // -----------  All Sorting Algorithm  -----------
+
+  /*---------------------Sorting Algorithm---------------------*/
+
+  /*---------------------Bubble Sort---------------------*/
+
   async function bubbleSort() {
     var newBars = []; //copy the array
     for (let i = 0; i < bar.length; i++) newBars.push(bar[i]);
@@ -70,6 +74,9 @@ const Sort = () => {
       document.getElementById("bar-" + sorted).style.background = SORTED_COLOR;
     }
   }
+
+  /*---------------------Selection Sort---------------------*/
+
   async function selectionSort() {
     var newBars = [];
     for (let i = 0; i < bar.length; i++) newBars.push(bar[i]);
@@ -90,13 +97,15 @@ const Sort = () => {
           document.getElementById("bar-" + leastIdx).style.background = "black";
         }
       }
-      // swap
       swap(i, leastIdx, newBars);
       document.getElementById("bar-" + leastIdx).style.background =
         ORGINAL_COLOR;
       document.getElementById("bar-" + i).style.background = SORTED_COLOR;
     }
   }
+
+  /*---------------------Insertion Sort---------------------*/
+
   const insertionSort = async () => {
     var newBars = [];
     for (let i = 0; i < bar.length; i++) newBars.push(bar[i]);
@@ -104,7 +113,6 @@ const Sort = () => {
     for (var i = 1; i < newBars.length; i++) {
       var tmp = newBars[i],
         j = i - 1;
-      document.getElementById("bar-" + i).style.transform = "translateY(15px)";
 
       while (j >= 0 && newBars[j] > tmp) {
         document.getElementById("bar-" + j).style.background = COMP_COLOR;
@@ -122,9 +130,11 @@ const Sort = () => {
       newBars[j + 1] = tmp;
       document.getElementById("bar-" + (j + 1)).style.height = tmp + "px";
       document.getElementById("bar-" + (j + 1)).style.background = SORTED_COLOR;
-      document.getElementById("bar-" + i).style.transform = "translateY(0px)";
     }
   };
+
+  /*---------------------Quick Sort---------------------*/
+
   const partition = async (low, high, array) => {
     let pivot = high,
       i = low;
@@ -154,14 +164,13 @@ const Sort = () => {
     await quickSort(pi + 1, high, array);
   };
 
+  /*---------------------Merge Sort---------------------*/
+
   const mergeSort = async (low, high, array) => {
     if (low >= high) return;
     var mid = Math.floor((low + high) / 2);
     await mergeSort(low, mid, array);
     await mergeSort(mid + 1, high, array);
-
-    // merge the array
-    // console.log(low,high, mid);
 
     var newArr1 = [],
       newArr2 = [];
@@ -215,13 +224,15 @@ const Sort = () => {
     }
   };
 
+  /*---------------------End Sorting Algorithm---------------------*/
+
+  /*---------------------Event Handlers---------------------*/
+
   const startSortingHandle = async () => {
-    var btns = document.getElementsByClassName("button-4");
+    var btns = document.getElementsByClassName("dis");
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = true;
     }
-    document.getElementsByTagName("select")[0].disabled = true;
-    document.getElementsByTagName("select")[1].disabled = true;
 
     var newBars = [];
     switch (sortID) {
@@ -247,8 +258,6 @@ const Sort = () => {
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = false;
     }
-    document.getElementsByTagName("select")[0].disabled = false;
-    document.getElementsByTagName("select")[1].disabled = false;
     bar.sort((a, b) => a > b);
   };
 
@@ -256,35 +265,30 @@ const Sort = () => {
     SPEED = parseInt(event.target.max) - parseInt(event.target.value);
     setSpeed(event.target.valueAsNumber);
   };
+
   const sizeHandle = (e) => {
     BARS = parseInt(e.target.value);
     generateNewArray();
   };
+
   const generateNewArray = () => {
-    var arr = [];
-    for (let i = 0; i < BARS; i++) {
-      let x = Math.floor(Math.random() * 1000) % 400;
-      arr.push(x);
-    }
+    init();
     for (let i = 0; i < bar.length; i++) {
       var dom = document.getElementById("bar-" + i);
-      dom.style.backgroundColor = "#3498DB";
+      dom.style.backgroundColor = ORGINAL_COLOR;
     }
-    setBar(arr);
   };
+
+  /*---------------------End Event Handlers---------------------*/
+
+  /*---------------------JSX---------------------*/
   return (
     <>
-      <div className="sorting-continer">
-        <div className="Btn-Wrap">
-          <div style={{ display: "flex" }}>
-            <button className="button-4 start-btn" onClick={startSortingHandle}>
-              Start Sorting
-            </button>
-            <button className="button-4" onClick={generateNewArray}>
-              Generate New
-            </button>
+      <div className="mx-auto my-7 max-w-6xl p-3">
+        <div className="mb-16 flex justify-between">
+          <div className="flex">
             <select
-              className="my-drop-down"
+              className="select dis"
               value={sortID}
               onChange={(e) => {
                 setSortID(parseInt(e.target.value));
@@ -298,33 +302,30 @@ const Sort = () => {
               <option value="2">Insertion Sort</option>
               <option value="3">Quick Sort</option>
               <option value="4">Merge Sort</option>
-              {/* <option value="5">Linear Search</option>
-                <option value="6">Binary Search</option> */}
             </select>
+            <button className="start-btn dis" onClick={startSortingHandle}>
+              Start Sorting
+            </button>
           </div>
-          <div className="st-speed-range">
-            <div className="st-speed-range-lavel">
-              <label className="sorting-label" htmlFor="range1">
-                Speed:{" "}
-              </label>
-            </div>
-            <div>
-              <input
-                type="range"
-                onChange={rangeValueHandle}
-                name="range1"
-                id="range1"
-                min="1"
-                value={speed}
-                max="1000"
-                step="1"
-              ></input>
-            </div>
+          <div className="flex items-center">
+            <label htmlFor="range" className="label mr-1">
+              Speed:
+            </label>
+            <input
+              className="slider"
+              type="range"
+              onChange={rangeValueHandle}
+              name="range"
+              id="range"
+              min="1"
+              value={speed}
+              max="1000"
+              step="1"
+            ></input>
           </div>
-          <div>
-            <label htmlFor="num">Choose Size: </label>
+          <div className="flex">
             <select
-              className="my-drop-down"
+              className="select dis"
               value={bar.length}
               onChange={sizeHandle}
               id="num"
@@ -334,18 +335,20 @@ const Sort = () => {
               <option value="50">50</option>
               <option value="100">100</option>
               <option value="200">200</option>
-              <option value="350">350</option>
             </select>
+            <button className="generate-btn dis" onClick={generateNewArray}>
+              Generate New
+            </button>
           </div>
         </div>
-        <div className="wrapperBar">
+        <div className="flex h-96 w-full items-end justify-center">
           {bar.map((item, id) => {
             return (
               <div
-                className="bar"
+                className="mx-[1px] flex w-4 items-end justify-center rounded-lg"
                 id={"bar-" + id}
                 key={id}
-                style={{ width: barWidth, height: item }}
+                style={{ height: item, backgroundColor: ORGINAL_COLOR }}
               ></div>
             );
           })}

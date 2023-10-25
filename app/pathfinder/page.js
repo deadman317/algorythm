@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "@/styles/PathfindingVS.css";
 import {
   Astar,
   Dijkstra,
@@ -15,14 +14,14 @@ import { Grids } from "@/components";
 var rows = 17;
 var cols = 31;
 
-var START_NODE_ROW = 4,
-  START_NODE_COL = 4;
-var END_NODE_ROW = rows - 5,
-  END_NODE_COL = cols - 5;
-var InitSR = START_NODE_ROW,
-  InitSC = START_NODE_COL;
-var InitER = END_NODE_ROW,
-  InitEC = END_NODE_COL;
+var START_NODE_ROW = 4;
+var START_NODE_COL = 4;
+var END_NODE_ROW = rows - 5;
+var END_NODE_COL = cols - 5;
+var InitSR = START_NODE_ROW;
+var InitSC = START_NODE_COL;
+var InitER = END_NODE_ROW;
+var InitEC = END_NODE_COL;
 
 var animateTime = 35; // 8,35,80
 
@@ -75,9 +74,7 @@ const PathFinder = () => {
   }
 
   const pathFinding = async () => {
-    var btns = document.getElementsByClassName("button-4");
-    document.getElementsByTagName("select")[0].disabled = true;
-    document.getElementsByTagName("select")[1].disabled = true;
+    var btns = document.getElementsByClassName("dis");
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = true;
     }
@@ -107,8 +104,6 @@ const PathFinder = () => {
         await animateShortestPath(obj.path);
         break;
     }
-    document.getElementsByTagName("select")[0].disabled = false;
-    document.getElementsByTagName("select")[1].disabled = false;
     for (let i = 0; i < btns.length; i++) {
       btns[i].disabled = false;
     }
@@ -243,89 +238,83 @@ const PathFinder = () => {
 
   return (
     <>
-      {/* <Navbar msg="Path Finder Visualizer"></Navbar> */}
-      <div className="path-container">
-        <div className="path-header">
-          <div>
-            <div style={{ display: "flex", margin: "6px auto" }}>
-              <div>
-                <button className="button-4 start-btn" onClick={pathFinding}>
-                  Find the possible path
-                </button>
-              </div>
-              <div>
-                <select
-                  className="my-drop-down"
-                  value={pathID}
-                  onChange={(e) => {
-                    setPathID(parseInt(e.target.value));
-                  }}
-                >
-                  <option value="0">A-Star Search</option>
-                  <option value="1">Breadth-First Search</option>
-                  <option value="2">Depth-First Search</option>
-                  <option value="3">Dijkstra</option>
-                </select>
-              </div>
+      <div className="mx-auto my-3 max-w-4xl">
+        <div className="flex justify-between">
+          <div className="left">
+            <div className="left-top flex">
+              <button className="start-btn dis" onClick={pathFinding}>
+                Find the possible path
+              </button>
+              <select
+                className="select dis"
+                value={pathID}
+                onChange={(e) => {
+                  setPathID(parseInt(e.target.value));
+                }}
+              >
+                <option value="0">A-Star Search</option>
+                <option value="1">Breadth-First Search</option>
+                <option value="2">Depth-First Search</option>
+                <option value="3">Dijkstra</option>
+              </select>
             </div>
-            <div className="path-speed-btns">
+            <div className="left-bottom">
               <button
-                className={`button-1 ${animateType === 1 && "curr-speed-btn"}`}
+                className={`button-primary ${animateType === 1 && "curr-btn"}`}
                 onClick={() => animationTimeHandle(1)}
               >
                 Fast
               </button>
               <button
-                className={`button-1 ${animateType === 2 && "curr-speed-btn"}`}
+                className={`button-primary ${animateType === 2 && "curr-btn"}`}
                 onClick={() => animationTimeHandle(2)}
               >
                 Average
               </button>
               <button
-                className={`button-1 ${animateType === 3 && "curr-speed-btn"}`}
+                className={`button-primary ${animateType === 3 && "curr-btn"}`}
                 onClick={() => animationTimeHandle(3)}
               >
                 Slow
               </button>
             </div>
           </div>
-          <div>
-            <div style={{ display: "flex", margin: "6px auto" }}>
+          <div className="right">
+            <div className="right-top flex">
               <select
-                className="my-drop-down"
+                className="select dis"
                 value={mazeID}
                 onChange={(e) => {
                   setMazeID(parseInt(e.target.value));
                 }}
               >
-                <option className="my-drop-down-option" disabled value="0">
+                <option disabled value="0">
                   Select Maze
                 </option>
                 <option value="1">Random basic maze</option>
                 <option value="2">Randomized_dfs</option>
                 <option value="3">Recursive division</option>
                 {/* <option value="4">Kruskal's algorithm</option>
-                                <option value="5">Prim's algorithm</option> */}
+                <option value="5">Prim's algorithm</option> */}
               </select>
-              <button className="button-4 start-maze-btn" onClick={mazeHandle}>
+              <button className="generate-btn dis" onClick={mazeHandle}>
                 Create Maze
               </button>
-              <label className="weight-toggle">
-                <span>Weight</span>
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={handleToggle}
-                />
-                <span>{isChecked ? "ON" : "OFF"}</span>
-              </label>
+              <button
+                className={`button-primary dis ${
+                  isChecked === true && "curr-btn"
+                }`}
+                onClick={handleToggle}
+              >
+                Weight
+              </button>
             </div>
-            <div style={{ display: "flex" }}>
-              <button className="button-4" onClick={clearPathHandle}>
+            <div className="right-bottom">
+              <button className="button-primary dis" onClick={clearPathHandle}>
                 Clear path
               </button>
               <button
-                className="button-4"
+                className="button-primary dis"
                 onClick={() => {
                   START_NODE_ROW = InitSR;
                   START_NODE_ROW = InitSC;
@@ -337,13 +326,13 @@ const PathFinder = () => {
               >
                 Reset board
               </button>
-              <button className="button-4" onClick={gridInitialize}>
+              <button className="button-primary dis" onClick={gridInitialize}>
                 Clear walls & weights
               </button>
             </div>
           </div>
         </div>
-        <div className="grid">
+        <div className="flex justify-center">
           <div
             onMouseLeave={() => {
               setIsMousePress(false);

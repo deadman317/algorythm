@@ -5,10 +5,7 @@ import Image from "next/image";
 import Theme from "./Theme";
 import { usePathname } from "next/navigation";
 
-const navigation = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-];
+const navigation = [{ name: "Home", href: "/" }];
 const Navbar = () => {
   const pathname = usePathname();
   return (

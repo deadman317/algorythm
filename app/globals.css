@@ -40,3 +40,171 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.select {
+  @apply mb-2 mr-2 block w-fit cursor-pointer rounded-md px-5 py-2.5 text-sm text-black focus:border-blue-500 focus:ring-blue-500 disabled:cursor-not-allowed;
+}
+
+.slider {
+  @apply mr-2 h-1 w-fit cursor-pointer rounded outline-none focus:border-blue-500 focus:ring-blue-500 disabled:cursor-not-allowed;
+}
+
+.input {
+  @apply mb-2 mr-2 block w-24 rounded-md px-5 py-2.5 text-sm text-black outline-none focus:border-blue-500 focus:ring-blue-500 disabled:cursor-not-allowed;
+}
+
+.button-primary {
+  @apply mb-2 mr-2 whitespace-nowrap rounded-lg border border-gray-600 bg-gray-800 px-5 py-2.5 text-sm font-medium text-gray-400 hover:bg-gray-700 hover:text-white  focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-700 disabled:cursor-not-allowed;
+}
+
+.generate-btn {
+  @apply mb-2 mr-2 whitespace-nowrap rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-800 disabled:cursor-not-allowed;
+}
+
+.start-btn {
+  @apply mb-2 mr-2 whitespace-nowrap rounded-lg bg-purple-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-900 disabled:cursor-not-allowed;
+}
+
+.curr-btn {
+  @apply bg-[#ae75f8] text-white hover:bg-[#ae75f8];
+}
+
+/* ----------------- Queen ----------------- */
+.queen-cell {
+  width: 70px;
+  height: 70px;
+  outline: 1px solid #607d8b;
+}
+
+.queen-img {
+  background-image: url(../icons/queen.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px;
+}
+.gray-cell {
+  background-color: gray;
+}
+.green-cell {
+  background-color: rgb(70, 216, 70);
+}
+.yellow-cell {
+  background-color: rgb(243, 243, 75);
+}
+.red-cell {
+  background-color: rgb(250, 114, 114);
+}
+.blue-cell {
+  background-color: rgb(148, 200, 248);
+}
+
+/* ----------------- Pathfind ----------------- */
+.square {
+  outline: 1px solid #afd8f8;
+  width: 30px;
+  height: 30px;
+  background-color: rgb(255, 255, 255);
+}
+
+.START_NODE {
+  outline: 1px solid #afd8f8;
+  background-image: url(../icons/pin.png);
+  background-repeat: no-repeat;
+  background-size: 30px;
+}
+.END_NODE {
+  outline: 1px solid #afd8f8;
+  background-image: url(../icons/goal.png);
+  background-repeat: no-repeat;
+  background-size: 30px;
+}
+
+.obtacle {
+  outline: 1px solid #2c3e50;
+  background-color: #2c3e50;
+  animation: wallAnimation 250ms ease-in;
+}
+
+.weight {
+  outline: 1px solid #afd8f8;
+  background-image: url(../icons/weight.png);
+  background-repeat: no-repeat;
+  background-size: 30px;
+  animation: wallAnimation 250ms ease-in;
+}
+/* -------- animation ------ */
+
+@keyframes wallAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.node-visited {
+  width: 30px;
+  height: 30px;
+  outline: 1px solid rgb(107, 218, 233);
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+    border-radius: 50%;
+  }
+  50% {
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+  100% {
+    transform: scale(1);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+.shortestPath {
+  width: 30px;
+  height: 30px;
+  outline: 1px solid #ffc300;
+  animation-name: shortestPathAnimation;
+  animation-duration: 500ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPathAnimation {
+  0% {
+    transform: scale(0.5);
+    background-color: rgba(151, 143, 70, 0.75);
+    border-radius: 50%;
+  }
+  50% {
+    transform: scale(0.8);
+    background-color: rgba(192, 187, 39, 0.75);
+  }
+  75% {
+    transform: scale(0.9);
+    background-color: rgba(247, 235, 130, 0.75);
+  }
+  100% {
+    transform: scale(1);
+    background-color: #ffc300;
+  }
+}
+
+/* ----------------- end pathfind ----------------- */

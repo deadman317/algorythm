@@ -16,6 +16,7 @@ const Card = ({ navigation }) => {
                   alt="Placeholder"
                   className="inline-block h-60 w-full object-cover object-center"
                   src={item.img}
+                  priority={true}
                 />
 
                 <header className="flex items-center justify-center p-2 leading-tight md:p-4">
